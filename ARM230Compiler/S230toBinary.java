@@ -1,4 +1,4 @@
-package code;
+package ARM230Compiler;
 
 /*************************************** 
  ***************************************
@@ -37,16 +37,13 @@ package code;
  *
  *  Thanks for reading.
 */
-public class Compiler{
+public class S230toBinary{
 
-             //As we move along in our project we should update this
-			//So far these instructions are supported.  Feel free to add more.
-             public enum Instruction {
-                  add, and, or, xor, addi, lw, sw, jr, cmp, b, bal, j, jal, li, blt, beq, bne;
-             }
-
-		 
-/*		 public String toBinaryStringL(int input, int totLength){
+		private enum Instruction {
+          add, and, or, xor, addi, lw, sw, jr, cmp, b, bal, j, jal, li, blt, beq, bne;
+      }
+		
+		private String toBinaryStringL(int input, int totLength){
 		 			boolean negative = false;	
 					
 					if(input < 0)
@@ -55,10 +52,10 @@ public class Compiler{
 					if(negative)
 						input -= 1;
 							
-					String toReturn = Integer.toBinaryString(input));
+					String toReturn = Integer.toBinaryString(input);
 					
 					if(negative){
-						string negativeToReturn = "";
+						String negativeToReturn = "";
 						for(char ch: toReturn.toCharArray()){
 							if(ch == '1')
 								negativeToReturn = negativeToReturn.concat("0");
@@ -77,9 +74,9 @@ public class Compiler{
 	           		}
 					}
 		 }
-*/
 
-        public static void main(String[] args){
+		/*
+        public String getBinary(String[] args){
 
                 //Make input compatible with Enum valueOf
                 String instrS = args[0].toLowerCase();
@@ -633,5 +630,6 @@ public class Compiler{
 	                    System.out.println(toReturn);
 	                    break;	
                 }
-        }
+        } 
+		  */
 }

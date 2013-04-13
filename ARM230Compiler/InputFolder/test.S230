@@ -1,0 +1,7 @@
+
+LOOP1:
+	 addi r2 r3 40
+	cmp    r2 r3
+	bne -2
+	--Comment goes here
+	cmp r4 r3
