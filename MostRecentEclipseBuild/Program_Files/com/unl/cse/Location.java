@@ -1,7 +1,6 @@
 package com.unl.cse;
 
 public class Location {
-	
 	private String name;
 	private int address;
 	
@@ -34,9 +33,5 @@ public class Location {
 	
 	public String getName(){
 		return this.name;
-	}
-	
-	public String toString(){
-		return "Location "+name+" at address "+address;
 	}
 }

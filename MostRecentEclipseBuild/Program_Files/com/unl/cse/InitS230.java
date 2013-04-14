@@ -35,7 +35,6 @@ public class InitS230 {
 		String dirName = System.getProperty("user.dir");
 		dirName = dirName.replace("/Program_Files/source","/").trim();
 		dirName = dirName.replace("/Program_Files/classes","/").trim();
-		dirName = dirName.replace("/Program_Files","/").trim();
 		dirName = dirName.concat("InputOutputFolder/");
 		File file = new File(dirName, filename);
 		Scanner toReturn = null;
@@ -63,19 +62,6 @@ public class InitS230 {
 				if(validInstructions[i].equals(inst2bedet)){
 					return true;
 				}
-		}
-		return false;
-	}
-	
-	//see if it is a location.
-	public static boolean isLocation(String line){
-		
-		String tempLine = line.replaceAll("\\s+", "");
-		tempLine = tempLine.replace("\\-\\-*", "");
-		//tempLine = tempLine.replace("--*", "");
-		tempLine = tempLine.trim();
-		if(tempLine.substring(tempLine.length()-1).equals(":")){
-			return true;
 		}
 		return false;
 	}
@@ -228,16 +214,6 @@ public class InitS230 {
 		}
 		
 		//only returns if the instruction was found
-		return toReturn;
-	}
-	
-	public static Location getLocation(String line, int S230MemoryAddress) {
-		// TODO Auto-generated method stub
-		String tempLine = line.replaceAll("\\s+", "");
-		tempLine = tempLine.replace(":", "");
-		tempLine = tempLine.replace("\\-\\-*", "");
-		tempLine = tempLine.trim();
-		Location toReturn = new Location(tempLine,S230MemoryAddress);
 		return toReturn;
 	}
 	
