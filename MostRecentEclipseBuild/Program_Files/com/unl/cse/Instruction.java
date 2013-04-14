@@ -23,6 +23,28 @@ public class Instruction {
 		return name;
 	}
 	
+	//checks to see if the two instructions are equal!
+	public boolean equals(Instruction instr){
+		if (instr.getName().equals(this.name)){
+			for(int i = 0; i<components.size(); i++){
+				if (!components.get(i).equals(instr.getComponents().get(i))){
+					return false;
+				}
+			}
+		} else {
+			return false;
+		}
+		return true;
+	}
+	
+	
+	//returns components
+	public ArrayList<String> getComponents(){
+		return this.components;
+	}
+	
+	
+	//outputs components in a nice string.
 	public String getComponentsToString(){
 		String comps = "Instruction "+ this.name +" has components";
 		for(String S: components){
@@ -31,6 +53,8 @@ public class Instruction {
 		return comps;
 	}
 	
+	
+	//use this command to add components to the components arraylist
 	public void setNextComponent(String component){
 		this.components.add(component);
 	}
@@ -48,6 +72,7 @@ public class Instruction {
 		}
 	}
 	
+	//OUTDATED DO NOT USE!
 	protected static boolean isLocation(String component){
 		return !isRegister(component);
 	}
@@ -55,6 +80,21 @@ public class Instruction {
 	protected static String registerToBinary(String component){
 		int compon = Integer.parseInt(component);
 		return Compiler.returnBinaryNumber(compon, 4);
+	}
+	
+	
+	//-------- TODO MIGHT NEED TO CHANGE FOR SW AND LW! --------
+	public void linker(ArrayList<Location> locs, int currentAddress){
+
+		//save some time wit this if statement!
+	   if(this instanceof B || this instanceof BAL || this instanceof BEQ || this instanceof BLT || this instanceof BNE)
+		for(Location loc: locs){
+			if(components.contains(loc.getName())){
+				components.remove(loc.getName());
+				//LOC-currentAddress+2 gives the correct branch offset.
+				components.add(""+(loc.getAddress()-(currentAddress+2)));
+			}
+		}
 	}
 	
 	
@@ -72,6 +112,15 @@ public class Instruction {
 			toReturn = toReturn.concat(" "+s);
 		}
 		toReturn = toReturn + ") MANUALLY! INSTRUCTION NOT SUPPORTED!";
+		return toReturn;
+	}
+	
+	public String generateMIFComment(){
+		String toReturn = "\t--Command:("+this.name;
+		for(String s: components){
+			toReturn = toReturn.concat(" "+s);
+		}
+		toReturn = toReturn.concat(")");
 		return toReturn;
 	}
 	
@@ -94,7 +143,7 @@ public class Instruction {
 		switch(instr) {
 			case add:
 					toReturn = toReturn.concat("100");
-					break;
+					break; 
 			case sub:
 					toReturn = toReturn.concat("000");
 					break;

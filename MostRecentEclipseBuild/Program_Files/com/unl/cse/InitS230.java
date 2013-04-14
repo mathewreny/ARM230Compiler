@@ -35,16 +35,16 @@ public class InitS230 {
 		String dirName = System.getProperty("user.dir");
 		dirName = dirName.replace("/Program_Files/source","/").trim();
 		dirName = dirName.replace("/Program_Files/classes","/").trim();
+		dirName = dirName.replace("/Program_Files","/").trim();
 		dirName = dirName.concat("InputOutputFolder/");
 		File file = new File(dirName, filename);
-		Scanner toReturn = null;
 		try {
-			toReturn = new Scanner(file);
+			return new Scanner(file);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return toReturn;
+		return null;
 	}
 	
 	
@@ -62,6 +62,19 @@ public class InitS230 {
 				if(validInstructions[i].equals(inst2bedet)){
 					return true;
 				}
+		}
+		return false;
+	}
+	
+	//see if it is a location.
+	public static boolean isLocation(String line){
+		
+		String tempLine = line.replaceAll("\\s+", "");
+		tempLine = tempLine.replace("\\-\\-*", "");
+		//tempLine = tempLine.replace("--*", "");
+		tempLine = tempLine.trim();
+		if(tempLine.length()>0 && tempLine.substring(tempLine.length()-1).equals(":")){ //DO NOT GET RID OF THE SHORT CIRCUIT
+			return true;
 		}
 		return false;
 	}
@@ -216,6 +229,24 @@ public class InitS230 {
 		//only returns if the instruction was found
 		return toReturn;
 	}
+	
+	public static Location getLocation(String line, int S230MemoryAddress) {
+		// TODO Auto-generated method stub
+		String tempLine = line.replaceAll("\\s+", "");
+		tempLine = tempLine.replace(":", "");
+		tempLine = tempLine.replace("\\-\\-*", "");
+		tempLine = tempLine.trim();
+		Location toReturn = new Location(tempLine,S230MemoryAddress);
+		return toReturn;
+	}
+
+	public static Constant getConstant(String line) {
+		int value = Integer.parseInt(line.substring(line.indexOf("(")+1, line.indexOf(")")));
+		System.out.println("....."+value);
+		String name = line.substring(line.indexOf(".")+1, line.indexOf("("));
+		return new Constant(name, value);
+	}
+
 	
 	
 	

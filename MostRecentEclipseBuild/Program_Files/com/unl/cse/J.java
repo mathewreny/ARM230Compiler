@@ -14,4 +14,11 @@ public class J extends Instruction{
 		return null;
 	}
 	
+	public String toBinaryInstruction(){
+		String instructionString = "0110";
+		instructionString = instructionString.concat(Compiler.returnBinaryNumber(
+				Integer.parseInt(super.components.get(0)),20));
+		return instructionString.trim();
+	}
+	
 }
