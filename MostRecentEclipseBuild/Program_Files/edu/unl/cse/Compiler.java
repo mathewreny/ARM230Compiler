@@ -1,4 +1,4 @@
-package com.unl.cse;
+package edu.unl.cse;
 /* 
 	This file was created by
 	Mathew Reny
@@ -11,12 +11,15 @@ package com.unl.cse;
 	TO WORK WITH JAVAC. IF YOU FIGURE OUT HOW TO DO THIS
 	PLEASE EMAIL ME! IT WOULD ALLOW THIS CODE TO BE SO
 	MUCH MORE MANAGEABLE.
+	
 */
 
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import edu.unl.cse.instructions.Instruction;
 
 
 public class Compiler {
@@ -29,30 +32,20 @@ public class Compiler {
  		//***********************************
 		//this is the initialization stage. *
 		//***********************************
+		ArrayList<String> tempargs = new ArrayList<String>();
+		if(isWindows()){
+			tempargs.add("-f");
+			tempargs.add("assembly.s230");			
+		} else {
+			int i=0;
+			for(String arg: args){
+				tempargs.add(arg);
+			}
+		}
+		String[] argsHC = tempargs.toArray(new String[tempargs.size()]);
 		
-			
-//The words "//REPLaCEARGSHC" and "//REPLaCEARGSCL"
-//will be changed to "String[]" depending on whether
-//you chose windows or linux when you installed. This
-//will remove the comments and make the code compilable.
-//THIS IS DONE BY THE INSTALLER! DO NOT CHANGE THIS CODE!
-		//REPLACEARGSHC[] argsHC = {"-f","assembly.s230"};  //DO NOT MANUALLY CHANGE THIS LINE
-		//REPLACEARGSCL[] argsCL = args; 						 //DO NOT MANUALLY CHANGE THIS LINE
-		String[] argsHC = {"-f","assembly.s230"};	//REMOVE THIS LINE ONCE READY FOR INSTALLATION!
-
-//NOTE! THE FOLLOWING COMMENTED CODE SHOUDLD BE PLACED INTO THE JAVA FILE
-//WHEN IT IS READY TO BE PACKAGED INTO AN INSTALATION! 
-		//REPLaCEINITS230	Used to distinguish between InitS230WIN and InitS230
-		//REPLaCEINITARGS	used to distinguish between hard coding and command line
-		//REPLaCEINITS230 initS230 = new REPLaCEINITS230(REPLaCEINITARGS);
-		InitS230WIN initS230 = new InitS230WIN(argsHC); //REPLACE THIS WHEN READY TO PACKAGE FINAL PRODUCT
-		
-//NOTE! THE FOLLOWING COMMENTED CODE SHOUDLD BE PLACED INTO THE JAVA FILE
-//WHEN IT IS READY TO BE PACKAGED INTO AN INSTALATION! 
-		//REPLaCEINITMIF 	Used to distinguish between InitMIFWIN and InitMIF
-		//REPLaCEINITARGS   Used to distinguish between hard coding and command line
-		//REPLaCEINITMIF initMIF = new REPLaACINITMIF(REPLaCEINITARGS);
-		InitMIFWIN initMIF = new InitMIFWIN(argsHC); //REPLACE THIS WHEN READY TO PACKAGE FINAL PRODUCT
+		InitS230 initS230 = new InitS230(argsHC);		
+		InitMIF initMIF = new InitMIF(argsHC); 
 		
 		 
 		//CREATE THE SCANNER OBJECT		
@@ -60,14 +53,14 @@ public class Compiler {
 		//This is needed to generate valid locations! It is set to # to offset for 
 		//the jump at the beginning of the code.  The jump is needed to skip
 		//the constants that the program creates in memory.
-		int MemoryAddress = 1;
+		int MemoryAddress = 1;		//SET TO 1 because the j (constants.size()) hard coded in the .mif generator.
+		
 		
 		
 		ArrayList<Location> locationsS230 = new ArrayList<Location>();
 		ArrayList<Instruction> instructionsS230 = new ArrayList<Instruction>();
 		ArrayList<Constant> constantsS230 = new ArrayList<Constant>();
 		
-		//@TODO: Create this next!
 		
 		/*  	THIS IS THE .S230 CONSTANT ADDRESS GENERATOR
 		 *
@@ -82,8 +75,19 @@ public class Compiler {
 		 *		the .mif writing stage. 
 		 *
 		 */
-		//SHOULD CHANGE TO constants.size() once the arraylist is created;	
 		reader = initS230.getScanner();
+		
+		//ADD CONSTANTS FOR THE BOARD LOGIC OUTPUTS!
+		MemoryAddress++;
+		constantsS230.add(new Constant("BOARDSWITCH", 32768)); //value = 1000000000000000
+		MemoryAddress++;
+		constantsS230.add(new Constant("BOARDKEY", 16384)); //value = 0100000000000000
+		MemoryAddress++;
+		constantsS230.add(new Constant("BOARDHEX0", 8192)); //value = 0010000000000000
+		MemoryAddress++;
+		constantsS230.add(new Constant("BOARDLEDGREEN", 4096)); //value = 0001000000000000
+
+		
 		while(reader.hasNextLine()){
 			//Get the line to read;
 			String line = reader.nextLine();
@@ -147,7 +151,8 @@ public class Compiler {
 						
 			PrintWriter writer = initMIF.getPrintWriter();
 			
-			writer.println("-- ARM230Compiler generated Memory Initialization File (.mif)");
+			writer.println("-- SMP ARM230Compiler generated Memory Initialization File (.mif)");
+			writer.println("-- Works with the University Of Nebraska CSCE230 Class Processor");
 			writer.println();
 			writer.println("WIDTH=24;                    -- The size of memory in words");
 			writer.println("DEPTH=1024;                  -- The size of data in bits");
@@ -158,7 +163,10 @@ public class Compiler {
 			writer.println("CONTENT BEGIN");
 			writer.println(" \t0\t\t\t : \t000000000000000000000000; --Memory address : data");
 			writer.println(" \t1\t\t\t : \t0110"+returnBinaryNumber(constantsS230.size(),20)+"; --SKIP CONSTANTS!");
-   			int memorySpace = 2;
+   			
+			// TODO ADD Constant locations for LED, HEX, SWITCH, AND PUSH BUTTONS!
+			
+			int memorySpace = 2;
    			for(int i = 0; i<constantsS230.size(); i++){
    				writer.println(" \t"+memorySpace+"\t\t\t : \t"+returnBinaryNumber(constantsS230.get(
    						i).getValue(), 24)+"; --Constant with value "+constantsS230.get(i).getValue());
@@ -175,6 +183,8 @@ public class Compiler {
    			 */
    			for(int i = 0; i<instructionsS230.size(); i++){
    				instructionsS230.get(i).linker(locationsS230, i+memorySpace-1);
+   				instructionsS230.get(i).constantLinker(constantsS230);
+   				System.out.println(instructionsS230.get(i).getComponentsToString());
    				System.out.println(instructionsS230.get(i).toBinaryInstruction()+";\t"+
    						instructionsS230.get(i).generateMIFComment());
    			}
@@ -187,7 +197,7 @@ public class Compiler {
 				memorySpace++;
 			}
 			writer.println(" \t["+memorySpace+"..1023]\t : \t000000000000000000000000; --Fill out rest of memory");
-			writer.println("END:");
+			writer.println("END;");
 			
 			
 			writer.close();
@@ -225,5 +235,11 @@ public class Compiler {
 		return binary;
 	}
 
+	public static boolean isWindows(){
+			if(System.getProperty("os.name").toLowerCase().contains("win")){
+				return true;
+			}
+			return false;
+	}
 
 }

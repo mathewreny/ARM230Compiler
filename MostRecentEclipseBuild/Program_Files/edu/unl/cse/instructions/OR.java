@@ -1,10 +1,10 @@
-package com.unl.cse;
+package edu.unl.cse.instructions;
 
 
-public class ADD extends Instruction{
+public class OR extends Instruction{
 
 
-	public ADD(String name) {
+	public OR(String name) {
 		super.name = name;
 	}
 
@@ -17,5 +17,4 @@ public class ADD extends Instruction{
 	public String toBinaryInstruction(){
 		return super.toBinaryALUInstructionRType();
 	}
-	
 }

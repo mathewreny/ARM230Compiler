@@ -1,11 +1,12 @@
-package com.unl.cse;
+package edu.unl.cse.instructions;
+
+public class SUB  extends Instruction{
 
 
-public class AND extends Instruction{
-
-	public AND(String name) {
+	public SUB(String name) {
 		super.name = name;
 	}
+
 
 	public String toS230() {
 		// TODO Auto-generated method stub
@@ -15,5 +16,4 @@ public class AND extends Instruction{
 	public String toBinaryInstruction(){
 		return super.toBinaryALUInstructionRType();
 	}
-	
 }

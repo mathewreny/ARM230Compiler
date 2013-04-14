@@ -1,7 +1,11 @@
-package com.unl.cse;
+package edu.unl.cse.instructions;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import edu.unl.cse.Compiler;
+import edu.unl.cse.Constant;
+import edu.unl.cse.Location;
 
 public class Instruction {
 	
@@ -83,7 +87,7 @@ public class Instruction {
 	}
 	
 	
-	//-------- TODO MIGHT NEED TO CHANGE FOR SW AND LW! --------
+	//This linker component works for branch type instructions
 	public void linker(ArrayList<Location> locs, int currentAddress){
 
 		//save some time wit this if statement!
@@ -94,6 +98,25 @@ public class Instruction {
 				//LOC-currentAddress+2 gives the correct branch offset.
 				components.add(""+(loc.getAddress()-(currentAddress+2)));
 			}
+		}
+	}
+	
+	//This linker puts works for LW and SW to load constants!
+	public void constantLinker(ArrayList<Constant> constants){
+		
+		if (this instanceof LW || this instanceof SW){
+			for(Constant c: constants){
+				if(components.contains(c.getName().toLowerCase())){
+					components.remove(c.getName().toLowerCase());
+					System.out.println("CONSTANT FOUND!");
+					components.add(""+(constants.indexOf(c)+2));
+					System.out.println(constants.indexOf(c));
+				} else{
+					//DO NOTHING
+					//System.out.println("Constant not found :(");
+				}
+			}
+			
 		}
 	}
 	

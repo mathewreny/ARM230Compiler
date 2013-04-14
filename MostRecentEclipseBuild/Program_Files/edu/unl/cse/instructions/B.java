@@ -1,12 +1,14 @@
-package com.unl.cse;
+package edu.unl.cse.instructions;
+
+import edu.unl.cse.Compiler;
 
 
-public class BNE extends Instruction{
+public class B extends Instruction{
 
-
-	public BNE(String name) {
+	public B(String name) {
 		super.name = name;
 	}
+
 
 	public String toS230() {
 		// TODO Auto-generated method stub
@@ -14,10 +16,10 @@ public class BNE extends Instruction{
 	}
 	
 	public String toBinaryInstruction(){
-		String instructionString = "00000001";
+		String instructionString = "00001110";
 		instructionString = instructionString.concat(Compiler.returnBinaryNumber(
 				Integer.parseInt(super.components.get(0)),16));
-		return instructionString.trim();		
+		return instructionString.trim();
 	}
 	
 }

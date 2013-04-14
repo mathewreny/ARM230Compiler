@@ -1,4 +1,5 @@
--- ARM230Compiler generated Memory Initialization File (.mif)
+-- SMP ARM230Compiler generated Memory Initialization File (.mif)
+-- Works with the University Of Nebraska CSCE230 Class Processor
 
 WIDTH=24;                    -- The size of memory in words
 DEPTH=1024;                  -- The size of data in bits
@@ -8,28 +9,33 @@ DATA_RADIX = BIN;            -- The radix for data values
 
 CONTENT BEGIN
  	0			 : 	000000000000000000000000; --Memory address : data
- 	1			 : 	011000000000000000000011; --SKIP CONSTANTS!
- 	2			 : 	000000000000111110110111; --Constant with value 4023
- 	3			 : 	000000000000000000101011; --Constant with value 43
- 	4			 : 	111111111111111110100100; --Constant with value -92
- 	5			 : 	011000000000000000011101;	--Command:(j 29)
- 	6			 : 	110011100011001001010000;	--Command:(addi r2 r3 40)
- 	7			 : 	111011100010100100000001;	--Command:(cmp r2 r9)
- 	8			 : 	000000010000000000000011;	--Command:(bne 3)
- 	9			 : 	101011100010101000111000;	--Command:(add r3 r2 r10)
- 	10			 : 	101011101100001101010000;	--Command:(sub r5 r12 r3)
- 	11			 : 	101011100011000011000100;	--Command:(and r12 r3 r0)
- 	12			 : 	101011100101010101010110;	--Command:(or r5 r5 r5)
- 	13			 : 	111011100101011000000001;	--Command:(cmp r5 r6)
- 	14			 : 	111111100011000000000000;	--Command:(jr r3)
- 	15			 : 	100011100101000100010100;	--Command:(lw r1 r5 10)
- 	16			 : 	100111100010101001101010;	--Command:(sw r10 r2 53)
- 	17			 : 	000011101111111111001110;	--Command:(b -50)
- 	18			 : 	010011101111111111111001;	--Command:(bal -7)
- 	19			 : 	011000000000000001100100;	--Command:(j 100)
- 	20			 : 	001000000000001111101000;	--Command:(jal 1000)
- 	21			 : 	001100110000000000011000;	--Command:(li r3 1024)
- 	22			 : 	101011100100000100100000;	--Command:(sub r2 r4 r1)
- 	23			 : 	101011100110100000111000;	--Command:(add r3 r6 r8)
- 	[24..1023]	 : 	000000000000000000000000; --Fill out rest of memory
-END:
+ 	1			 : 	011000000000000000000111; --SKIP CONSTANTS!
+ 	2			 : 	000000001000000000000000; --Constant with value 32768
+ 	3			 : 	000000000100000000000000; --Constant with value 16384
+ 	4			 : 	000000000010000000000000; --Constant with value 8192
+ 	5			 : 	000000000001000000000000; --Constant with value 4096
+ 	6			 : 	000000000000111110110111; --Constant with value 4023
+ 	7			 : 	000000000000000000101011; --Constant with value 43
+ 	8			 : 	111111111111111110100100; --Constant with value -92
+ 	9			 : 	011000000000000000011101;	--Command:(j 29)
+ 	10			 : 	110011100011001001010000;	--Command:(addi r2 r3 40)
+ 	11			 : 	111011100010100100000001;	--Command:(cmp r2 r9)
+ 	12			 : 	000000010000000000000100;	--Command:(bne 4)
+ 	13			 : 	100011100000001000001100;	--Command:(lw r2 r0 6)
+ 	14			 : 	101011100010101000111000;	--Command:(add r3 r2 r10)
+ 	15			 : 	101011101100001101010000;	--Command:(sub r5 r12 r3)
+ 	16			 : 	101011100011000011000100;	--Command:(and r12 r3 r0)
+ 	17			 : 	101011100101010101010110;	--Command:(or r5 r5 r5)
+ 	18			 : 	111011100101011000000001;	--Command:(cmp r5 r6)
+ 	19			 : 	111111100011000000000000;	--Command:(jr r3)
+ 	20			 : 	100011100101000100010100;	--Command:(lw r1 r5 10)
+ 	21			 : 	100111100010101001101010;	--Command:(sw r10 r2 53)
+ 	22			 : 	000011101111111111001110;	--Command:(b -50)
+ 	23			 : 	010011101111111111111001;	--Command:(bal -7)
+ 	24			 : 	011000000000000001100100;	--Command:(j 100)
+ 	25			 : 	001000000000001111101000;	--Command:(jal 1000)
+ 	26			 : 	001100110000000000011000;	--Command:(li r3 1024)
+ 	27			 : 	101011100100000100100000;	--Command:(sub r2 r4 r1)
+ 	28			 : 	101011100110100000111000;	--Command:(add r3 r6 r8)
+ 	[29..1023]	 : 	000000000000000000000000; --Fill out rest of memory
+END;

@@ -1,13 +1,11 @@
-package com.unl.cse;
+package edu.unl.cse.instructions;
 
 
-public class XOR extends Instruction{
+public class AND extends Instruction{
 
-
-	public XOR(String name) {
+	public AND(String name) {
 		super.name = name;
 	}
-
 
 	public String toS230() {
 		// TODO Auto-generated method stub
@@ -17,4 +15,5 @@ public class XOR extends Instruction{
 	public String toBinaryInstruction(){
 		return super.toBinaryALUInstructionRType();
 	}
+	
 }

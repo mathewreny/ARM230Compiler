@@ -1,10 +1,12 @@
-package com.unl.cse;
+package edu.unl.cse.instructions;
+
+import edu.unl.cse.Compiler;
 
 
-public class J extends Instruction{
+public class JAL extends Instruction{
 
 
-	public J(String name) {
+	public JAL(String name) {
 		super.name = name;
 	}
 
@@ -15,7 +17,7 @@ public class J extends Instruction{
 	}
 	
 	public String toBinaryInstruction(){
-		String instructionString = "0110";
+		String instructionString = "0010";
 		instructionString = instructionString.concat(Compiler.returnBinaryNumber(
 				Integer.parseInt(super.components.get(0)),20));
 		return instructionString.trim();

@@ -1,13 +1,13 @@
-package com.unl.cse;
+package edu.unl.cse.instructions;
+
+import edu.unl.cse.Compiler;
 
 
-public class SW extends Instruction{
+public class ADDI extends Instruction{
 
-
-	public SW(String name) {
+	public ADDI(String name) {
 		super.name = name;
 	}
-
 
 	public String toS230() {
 		// TODO Auto-generated method stub
@@ -15,13 +15,13 @@ public class SW extends Instruction{
 	}
 	
 	public String toBinaryInstruction(){
-		String instructionString = "10011110";
+		String instructionString = "11001110";
 		instructionString = instructionString.concat(Compiler.returnBinaryNumber(
 				Integer.parseInt(super.components.get(1).substring(1)),4));
 		instructionString = instructionString.concat(Compiler.returnBinaryNumber(
 				Integer.parseInt(super.components.get(0).substring(1)),4));
 		instructionString = instructionString.concat(Compiler.returnBinaryNumber(
-				Integer.parseInt(super.components.get(2)),7));
+				Integer.parseInt(super.components.get(2)), 7));
 		instructionString = instructionString.concat("0");
 		return instructionString.trim();
 	}

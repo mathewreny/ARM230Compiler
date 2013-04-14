@@ -1,16 +1,36 @@
-package com.unl.cse;
+package edu.unl.cse;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class InitS230WIN {
+import edu.unl.cse.instructions.ADD;
+import edu.unl.cse.instructions.ADDI;
+import edu.unl.cse.instructions.AND;
+import edu.unl.cse.instructions.B;
+import edu.unl.cse.instructions.BAL;
+import edu.unl.cse.instructions.BEQ;
+import edu.unl.cse.instructions.BLT;
+import edu.unl.cse.instructions.BNE;
+import edu.unl.cse.instructions.CMP;
+import edu.unl.cse.instructions.Instruction;
+import edu.unl.cse.instructions.J;
+import edu.unl.cse.instructions.JAL;
+import edu.unl.cse.instructions.JR;
+import edu.unl.cse.instructions.LI;
+import edu.unl.cse.instructions.LW;
+import edu.unl.cse.instructions.OR;
+import edu.unl.cse.instructions.SUB;
+import edu.unl.cse.instructions.SW;
+import edu.unl.cse.instructions.XOR;
+
+public class InitS230 {
 
 	private ArrayList<String> argList = new ArrayList<String>();
 	
 	//constructor
-	public InitS230WIN(String[] args){
+	public InitS230(String[] args){
 		for(int i = 0; i<args.length; i++){
 			String arg = args[i];
 			this.argList.add(arg);
@@ -22,7 +42,7 @@ public class InitS230WIN {
 	//Get the scanner object. Chose to make this not static 
 	//because it is a global thing that needs to be reset often.
 	public Scanner getScanner(){
-		
+	  if(Compiler.isWindows()){ //IF THE OPPERATING SYSTEM IS WINDOWS
 		String filename = "";
 		for(int i = 0; i<argList.size(); i++ ){
 			if(argList.get(i).equals("-f")){
@@ -38,14 +58,36 @@ public class InitS230WIN {
 		dirName = dirName.concat("\\InputOutputFolder\\");
 		System.out.println(dirName+filename);
 		File file = new File(dirName, filename);
-		Scanner toReturn = null;
 		try {
-			toReturn = new Scanner(file);
+			return new Scanner(file);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+	  } else {  //IF THE OPPERATING SYSTEM IS LINUX OR UNIX
+		String filename = "";
+		for(int i = 0; i<argList.size(); i++ ){
+			if(argList.get(i).equals("-f")){
+				filename = argList.get(i+1);
+				//DIFFERENT FROM OTHER INIT FILE!
+				filename = filename.trim().replace(".s230", ".S230");
+			}
+		}
+		System.out.println(System.getProperty("user.dir") + " ... " + filename);
+		String dirName = System.getProperty("user.dir");
+		dirName = dirName.replace("/Program_Files/source","/").trim();
+		dirName = dirName.replace("/Program_Files/classes","/").trim();
+		dirName = dirName.replace("/Program_Files","/").trim();
+		dirName = dirName.concat("InputOutputFolder/");
+		File file = new File(dirName, filename);
+		try {
+			return new Scanner(file);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return toReturn;
+	  }
+	  return null;
 	}
 	
 	
@@ -63,6 +105,19 @@ public class InitS230WIN {
 				if(validInstructions[i].equals(inst2bedet)){
 					return true;
 				}
+		}
+		return false;
+	}
+	
+	//see if it is a location.
+	public static boolean isLocation(String line){
+		
+		String tempLine = line.replaceAll("\\s+", "");
+		tempLine = tempLine.replace("\\-\\-*", "");
+		//tempLine = tempLine.replace("--*", "");
+		tempLine = tempLine.trim();
+		if(tempLine.length()>0 && tempLine.substring(tempLine.length()-1).equals(":")){ //DO NOT GET RID OF THE SHORT CIRCUIT
+			return true;
 		}
 		return false;
 	}
@@ -91,13 +146,24 @@ public class InitS230WIN {
 	
 	//This is needed to create the instructions in getInstruction
 	private static String getAdReg(String compon){
+		//if this or sw or lw works with a constant...
+		if(compon.indexOf("(") == -1){
+			System.out.println("compon set to r0");
+			return "r0";
+		}
 		compon = compon.substring(compon.indexOf("(")+1,compon.indexOf(")"));
+		System.out.println(compon);
 		return compon;
 	}
 	
 	//This is also needed to create the instructions in getInstruction
 	private static String getAdImmd(String compon){
+		if(compon.indexOf("(") == -1){
+			System.out.println("Nextcompon set to "+compon.trim());
+			return compon.trim();
+		}
 		compon = compon.substring(0,compon.indexOf("("));
+		System.out.println("index was > -1 so compon = "+compon);
 		return compon;
 	}
 	
@@ -105,7 +171,7 @@ public class InitS230WIN {
 	private static enum InstructionsS230{
 		add, and, or, xor, addi,
 		lw, sw, jr, cmp, b, bal, j, jal, li, 
-		blt, beq, bne;
+		blt, beq, bne, sub;
 	}
 	
 	
@@ -148,6 +214,7 @@ public class InitS230WIN {
 					toReturn.setNextComponent(comps.get(3));
 					break;
 			case lw:
+					
 					toReturn = new LW(comps.get(0));
 					toReturn.setNextComponent(comps.get(1));
 					toReturn.setNextComponent(getAdReg(comps.get(2)));
@@ -201,6 +268,12 @@ public class InitS230WIN {
 					toReturn = new BNE(comps.get(0));
 					toReturn.setNextComponent(comps.get(1));
 					break;
+			case sub:
+					toReturn = new SUB(comps.get(0));
+					toReturn.setNextComponent(comps.get(1));
+					toReturn.setNextComponent(comps.get(2));
+					toReturn.setNextComponent(comps.get(3));
+					break;					
 		}
 		
 		if(toReturn.getName().equals("")){
@@ -211,5 +284,29 @@ public class InitS230WIN {
 		//only returns if the instruction was found
 		return toReturn;
 	}
+	
+	public static Location getLocation(String line, int S230MemoryAddress) {
+		// TODO Auto-generated method stub
+		String tempLine = line.replaceAll("\\s+", "");
+		tempLine = tempLine.replace(":", "");
+		tempLine = tempLine.replace("\\-\\-*", "");
+		tempLine = tempLine.trim();
+		Location toReturn = new Location(tempLine,S230MemoryAddress);
+		return toReturn;
+	}
+
+	public static Constant getConstant(String line) {
+		int value = Integer.parseInt(line.substring(line.indexOf("(")+1, line.indexOf(")")));
+		System.out.println("....."+value);
+		String name = line.substring(line.indexOf(".")+1, line.indexOf("("));
+		return new Constant(name, value);
+	}
+
+	
+	
+	
+	
+	
+	
 	
 }

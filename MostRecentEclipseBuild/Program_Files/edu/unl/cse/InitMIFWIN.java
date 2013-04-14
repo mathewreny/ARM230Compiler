@@ -1,4 +1,4 @@
-package com.unl.cse;
+package edu.unl.cse;
 
 import java.io.File;
 import java.io.FileNotFoundException;

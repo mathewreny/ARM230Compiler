@@ -1,9 +1,10 @@
-package com.unl.cse;
-
-public class SUB  extends Instruction{
+package edu.unl.cse.instructions;
 
 
-	public SUB(String name) {
+public class XOR extends Instruction{
+
+
+	public XOR(String name) {
 		super.name = name;
 	}
 

@@ -1,4 +1,4 @@
-package com.unl.cse;
+package edu.unl.cse;
 
 public class Constant {
 

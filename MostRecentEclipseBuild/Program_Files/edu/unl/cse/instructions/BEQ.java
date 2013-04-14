@@ -1,12 +1,14 @@
-package com.unl.cse;
+package edu.unl.cse.instructions;
+
+import edu.unl.cse.Compiler;
 
 
-public class BAL extends Instruction{
+public class BEQ extends Instruction{
 
-	public BAL(String name) {
+	public BEQ(String name) {
 		super.name = name;
 	}
-		
+
 
 	public String toS230() {
 		// TODO Auto-generated method stub
@@ -14,10 +16,10 @@ public class BAL extends Instruction{
 	}
 	
 	public String toBinaryInstruction(){
-		String instructionString = "01001110";
+		String instructionString = "00000000";
 		instructionString = instructionString.concat(Compiler.returnBinaryNumber(
 				Integer.parseInt(super.components.get(0)),16));
-		return instructionString.trim();
+		return instructionString.trim();		
 	}
 	
 }

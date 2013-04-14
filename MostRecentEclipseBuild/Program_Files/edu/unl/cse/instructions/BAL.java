@@ -1,13 +1,14 @@
-package com.unl.cse;
+package edu.unl.cse.instructions;
+
+import edu.unl.cse.Compiler;
 
 
-public class JAL extends Instruction{
+public class BAL extends Instruction{
 
-
-	public JAL(String name) {
+	public BAL(String name) {
 		super.name = name;
 	}
-
+		
 
 	public String toS230() {
 		// TODO Auto-generated method stub
@@ -15,9 +16,9 @@ public class JAL extends Instruction{
 	}
 	
 	public String toBinaryInstruction(){
-		String instructionString = "0010";
+		String instructionString = "01001110";
 		instructionString = instructionString.concat(Compiler.returnBinaryNumber(
-				Integer.parseInt(super.components.get(0)),20));
+				Integer.parseInt(super.components.get(0)),16));
 		return instructionString.trim();
 	}
 	
