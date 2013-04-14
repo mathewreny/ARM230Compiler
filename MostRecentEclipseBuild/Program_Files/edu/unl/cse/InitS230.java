@@ -78,7 +78,7 @@ public class InitS230 {
 		dirName = dirName.replace("/Program_Files/source","/").trim();
 		dirName = dirName.replace("/Program_Files/classes","/").trim();
 		dirName = dirName.replace("/Program_Files","/").trim();
-		dirName = dirName.concat("InputOutputFolder/");
+		dirName = dirName.concat("/InputOutputFolder/");
 		File file = new File(dirName, filename);
 		try {
 			return new Scanner(file);

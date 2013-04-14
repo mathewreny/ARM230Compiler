@@ -55,7 +55,7 @@ public class InitMIF {
 		String dirName = System.getProperty("user.dir");
 		dirName = dirName.replace("/Program_Files/source","/").trim();
 		dirName = dirName.replace("/Program_Files/classes","/").trim();
-		dirName = dirName.concat("InputOutputFolder/");
+		dirName = dirName.concat("/InputOutputFolder/");
 		System.out.println(dirName+filename);
 		File file = new File(dirName, filename);
 		try{
