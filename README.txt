@@ -1,5 +1,20 @@
+## How not to use git
+
+The contents of this project are a good reminder of what not to 
+do with git. I was not properly aquainted with the technology 
+since this project was my first time using git.
+
+## Status
+
+This project was not intended to be used by anyone besides my 
+classmates. I have not maintained it since passing the course.
+
+updated Tue March 31, 2015.
+
+## Old README circa 2013
+
 Program Created by Mathew Reny
-If you need help, contact me at mhreny@gmail.com
+If you need help, contact me at *[EMAIL REMOVED]*
 
 To compile you should run the Installer program.
 To run this program you must change the permission
